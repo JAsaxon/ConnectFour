@@ -1,0 +1,72 @@
+$size: 5em;
+$white: #f1faee;
+$red: #e63946;
+$blue-darkest: #1d3557;
+$blue-dark: #457b9d;
+$blue-clear: #a8dadc;
+@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;500;900&display=swap");
+body {
+  margin: 0;
+  background: $blue-clear;
+  color: $blue-darkest;
+  font-family: "Roboto", sans-serif;
+  overflow: hidden;
+}
+h1 {
+  font-size: 3em;
+  font-weight: 400;
+  margin-bottom: 0.25em;
+}
+h2 {
+  font-size: 2em;
+  font-weight: 400;
+  margin-top: 0;
+}
+.title {
+  text-align: center;
+}
+.board {
+  position: relative;
+  left: 50%;
+  transform: translate(-50%) ;
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  background: $blue-dark;
+  width: fit-content;
+  height: fit-content;
+  border-radius: 0.25em;
+}
+.el {
+  background: $blue-clear;
+  width: $size;
+  height: $size;
+  text-align: center;
+  line-height: $size;
+  border-radius: 50%;
+  margin: 1em;
+}
+.red{
+    background: $red;
+}
+.blue{
+    background: $blue-darkest;
+}
+.state{
+  width: 100vw;
+  text-align: center;
+}
+.Red{
+  color: $red;
+}
+.Blue{
+  color: $blue-darkest;
+}
+.Red, .Blue{
+  text-decoration: underline;
+}
+h1{
+  color: $blue-dark;
+  font-weight: 800;
+  text-align: center;
+  width: 100vw;
+}
