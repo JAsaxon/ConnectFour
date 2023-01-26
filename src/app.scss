@@ -39,6 +39,8 @@ h2 {
   background: $blue-clear;
   width: $size;
   height: $size;
+  max-width: 5em;
+  max-height: 5em;
   text-align: center;
   line-height: $size;
   border-radius: 50%;
