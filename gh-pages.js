@@ -1,13 +1,13 @@
-var ghpages = require('gh-pages');
+import { publish } from 'gh-pages';
 
-ghpages.publish(
-    'public', // path to public directory
+publish(
+    'dist', // path to public directory
     {
         branch: 'gh-pages',
-        repo: 'https://github.com/username/yourproject.git', // Update to point to your repository  
+        repo: 'https://github.com/JAsaxon/ConnectFour', // Update to point to your repository  
         user: {
-            name: 'Your name', // update to use your name
-            email: 'Your Email address' // Update to use your email
+            name: 'jorge saxon', // update to use your name
+            email: 'jorgesaxon1234@gmail.com' // Update to use your email
         }
     },
     () => {
