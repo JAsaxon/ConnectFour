@@ -1,17 +1,25 @@
 <script lang="ts">
-  import { each } from "svelte/internal";
+  import { each, onMount } from "svelte/internal";
   import { fly } from "svelte/transition";
+  import {io} from "socket.io-client"
+  const socket = io("https://connectfourserver-2ucedebk7a-wn.a.run.app")
 
-  let BoardArray = [
-    [0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0],
-  ];
+  let BoardArray = []
   let player = 1;
   let maxHeight = [5, 5, 5, 5, 5, 5];
+  socket.on("get", (board)=>{
+    BoardArray = board.board
+    maxHeight = board.maxHeight
+    console.log(maxHeight)
+
+  })
+  const key = Math.floor(Math.random()*1000)
+  socket.emit("join",{
+    key: key
+  })
+  socket.on("end", ()=>{
+    state.winner = null
+  })
   const horizontalCheck = [
     [0, 0],
     [0, 1],
@@ -30,7 +38,7 @@
     [-2, 2],
     [-3, 3],
   ];
-  function getColor(num: number) {
+  function getColor(num) {
     if (num === 0) {
       return "";
     }
@@ -41,10 +49,11 @@
       return "blue";
     }
   }
+
   function handleClick(y, x) {
     if (maxHeight[y] !== -1) {
       player = (player % 2) + 1;
-      BoardArray[y][maxHeight[y]] = player;
+      socket.emit("move", [maxHeight[y],y,player,key])
       maxHeight[y] -= 1;
     }
   }
@@ -52,10 +61,10 @@
     1: "Red",
     2: "Blue",
   };
-  function checkWin(x: number, y: number) {
+  function checkWin(x, y) {
     let results = [];
     // Get neighbors
-    let won: boolean;
+    let won
     results[0] = horizontalCheck.map((offset) => {
       return BoardArray?.[x + offset[0]]?.[y + offset[1]] || 0;
     });
@@ -76,12 +85,23 @@
     won = results.some((el) => el !== false);
     if (won) {
       const winner = numberToName[BoardArray[x][y]];
+      socket.emit("end", true)
       return winner;
     } else {
       return false;
     }
   }
   $: {
+    if(BoardArray === undefined){
+      BoardArray= [
+  [ 0, 0, 0, 0, 0, 0 ],
+  [ 0, 0, 0, 0, 0, 0 ],
+  [ 0, 0, 0, 0, 0, 0 ],
+  [ 0, 0, 0, 0, 0, 0 ],
+  [ 0, 0, 0, 0, 0, 0 ],
+  [ 0, 0, 0, 0, 0, 0 ]
+]
+      }
     for (let x = 0; x < BoardArray.length; x++) {
       for (let y = 0; y < BoardArray[0].length; y++) {
         let win = checkWin(y, x);
